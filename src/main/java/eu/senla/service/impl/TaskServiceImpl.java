@@ -1,4 +1,5 @@
 package eu.senla.service.impl;
+import eu.senla.config.properties.AppCacheProperties;
 import eu.senla.dao.TaskRepository;
 import eu.senla.domain.Task;
 import eu.senla.domain.User;
@@ -10,6 +11,10 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +24,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CacheConfig(cacheManager = "redisCacheManager")
 public class TaskServiceImpl implements TaskService {
 
     TaskRepository taskRepository;
@@ -54,7 +60,7 @@ public class TaskServiceImpl implements TaskService {
     public Task updateTask(Task task) {
         Task fromDb = findById(task.getId());
         BeanUtils.copyNonNullValues(task, fromDb);
-        return taskRepository.save(task);
+        return taskRepository.save(fromDb);
     }
 
     @Override
