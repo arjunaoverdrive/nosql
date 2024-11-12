@@ -1,5 +1,6 @@
 package eu.senla.web.controller;
 
+import eu.senla.domain.Task;
 import eu.senla.mapper.TaskMapper;
 import eu.senla.service.TaskService;
 import eu.senla.web.dto.request.AddObserversRequest;
@@ -55,8 +56,9 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> updateTaskById(@Valid @RequestBody TaskUpdateRequest request) {
-        TaskResponse taskResponse = taskMapper.toTaskResponse(taskService.updateTask(taskMapper.toTask(request)));
+    public ResponseEntity<TaskResponse> updateTaskById(@PathVariable Long id, @Valid @RequestBody TaskUpdateRequest request) {
+        Task task = taskService.updateTask(taskMapper.toTask(id, request));
+        TaskResponse taskResponse = taskMapper.toTaskResponse(task);
         return ResponseEntity.ok().body(taskResponse);
     }
 
