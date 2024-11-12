@@ -21,5 +21,29 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 server:
   port: 8080
+
+app:
+  redis:
+    enable: true
+  cache:
+    cache-names:
+      - allTasks
+      - taskById
+      - allUsers
+      - userById
+    caches:
+      allTasks:
+        expiry: 5m
+      taskById:
+        expiry: 5m
+      allUsers:
+        expiry: 5m
+      userById:
+        expiry: 5m

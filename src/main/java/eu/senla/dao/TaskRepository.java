@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    @EntityGraph(attributePaths = {"observers"})
+    @EntityGraph(attributePaths = {"author", "assignee", "observers"})
     Optional<Task> findById(Long id);
 }
