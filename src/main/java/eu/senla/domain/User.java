@@ -47,7 +47,7 @@ public class User {
     @OneToMany(mappedBy = "assignee", cascade = CascadeType.MERGE)
     Set<Task> assignedTasks = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinTable(
