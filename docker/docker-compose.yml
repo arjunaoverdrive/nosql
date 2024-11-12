@@ -1,0 +1,41 @@
+version: "3"
+
+networks:
+  no-sql:
+    driver: bridge
+
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    networks:
+      - no-sql
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    environment:
+      POSTGRES_DB: "no_sql_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./2. Init Database:/docker-entrypoint-initdb.d
+      - no_sql-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+
+volumes:
+  no_sql-data:

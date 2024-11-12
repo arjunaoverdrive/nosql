@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: no_sql app
+
+  profiles:
+    active:
+      - dev
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/no_sql_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      auto-commit: false
+
+  jpa:
+    hibernate:
+      ddl-auto: 'validate'
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+server:
+  port: 8080
