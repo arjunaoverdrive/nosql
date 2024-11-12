@@ -20,6 +20,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +31,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_id_seq")
@@ -42,9 +44,13 @@ public class User {
     boolean isEnabled;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     Set<Task> createdTasks = new HashSet<>();
 
     @OneToMany(mappedBy = "assignee", cascade = CascadeType.MERGE)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     Set<Task> assignedTasks = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.MERGE)
@@ -70,5 +76,10 @@ public class User {
     public void addObservedTasks(Task task) {
         task.getObservers().add(this);
         this.observedTasks.add(task);
+    }
+
+    public void removeObservedTask(Task task) {
+        this.observedTasks.remove(task);
+        task.setObservers(new HashSet<>());
     }
 }
