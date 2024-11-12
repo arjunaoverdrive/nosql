@@ -1,4 +1,5 @@
 package eu.senla.service.impl;
+
 import eu.senla.config.properties.AppCacheProperties;
 import eu.senla.dao.TaskRepository;
 import eu.senla.domain.Task;
